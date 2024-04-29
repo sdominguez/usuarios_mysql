@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Este es un ejemplo de documentación de una API con el CRUD de Usuarios",
+    "version": "1.0.0",
+    "title": "API usuarios"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/usuarios",
+      "description": "Entorno local desarrollo"
+    }
+  ],
+  "tags": [
+    {
+      "name": "usuarios",
+      "description": "Maneja la información de los usuarios del sistema"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Inserta información de nuevo usuario en la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyUsuariosCrear"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "(OK) La información del usuario se guardo correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitoUsuariosCreado"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Unauthorized": {
+        "description": "(Unauthorized) No hay autorización para llamar al servicio"
+      },
+      "NotFound": {
+        "description": "(NotFound) No se encontró información"
+      },
+      "BadRequest": {
+        "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados"
+      },
+      "ServerError": {
+        "description": "Error en servidor"
+      }
+    },
+    "parameters": {
+      "token": {
+        "in": "header",
+        "name": "x-token",
+        "description": "Token de autenticación.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "BodyUsuariosCrear": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre completo del usuario"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email del usuario"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password del usuario"
+          }
+        }
+      },
+      "ExitoUsuariosCreado": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "enum": [
+              15
+            ],
+            "description": "Id correspondiente al usuario registrado en la base de datos"
+          }
+        }
+      }
+    }
+  }
+}
